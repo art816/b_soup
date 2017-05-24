@@ -74,12 +74,13 @@ def create_zip_with_xmls(list_zip_name):
 def multiprocess_zip_creator():
     """ Start {cpu_count()} process create_zip_with_xmls. """
     pool_process = []
+    num_zip = 50
     for cpu in range(cpu_count()):
         pool_process.append(
             Process(
                 target=create_zip_with_xmls,
                 args=(list(
-                    range(cpu, 50, cpu_count())),)))
+                    range(cpu, num_zip, cpu_count())),)))
         pool_process[-1].start()
     for process in pool_process:
         process.join()
@@ -97,9 +98,9 @@ def multiprocess_zip_read(mypath):
     id_level = []
     id_object_name = []
     for cpu in range(cpu_count()):
-        top = int(len(onlyzip)/cpu_count())
-        upper = (cpu+1)*top if (cpu+2)*top <= len(onlyzip) else len(onlyzip)
-        file_names = onlyzip[cpu*top : upper]
+        step = int(len(onlyzip)/cpu_count())
+        top = (cpu+1)*step if (cpu+2)*step <= len(onlyzip) else len(onlyzip)
+        file_names = onlyzip[cpu*step : top]
         pool_process.append(
             Process(
                 target=read_zip,
