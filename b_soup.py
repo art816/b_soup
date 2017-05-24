@@ -2,6 +2,7 @@
 
 import random
 import string
+import os
 from os import cpu_count
 from os import listdir
 from os.path import join
@@ -64,6 +65,8 @@ def create_xml():
 def create_zip_with_xmls(list_zip_name):
     """ Create zip with {count_xml} xmls. """
     count_xml = 100
+    if not os.path.exists('zip'):
+        os.makedirs('zip')
     for num_zip in list_zip_name:
         with ZipFile('zip/{}.zip'.format(num_zip), 'w') as myzip:
             for num_xml in range(count_xml):
